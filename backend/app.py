@@ -8,6 +8,7 @@ CORS(app)
 
 DB_PATH = "expenses.db"
 
+# Initialize DB on import
 def init_db():
     if not os.path.exists(DB_PATH):
         conn = sqlite3.connect(DB_PATH)
@@ -22,6 +23,11 @@ def init_db():
         ''')
         conn.commit()
         conn.close()
+        print("Database initialized with 'expenses' table.")
+    else:
+        print("Database already exists.")
+
+init_db()  # <-- This runs no matter where the app is run from
 
 def get_db_connection():
     conn = sqlite3.connect(DB_PATH)
@@ -67,5 +73,4 @@ def remove_expense(expense_id):
     return jsonify({"message": "Expense removed successfully"}), 200
 
 if __name__ == "__main__":
-    init_db()
     app.run(host="0.0.0.0", port=5000, debug=True)
